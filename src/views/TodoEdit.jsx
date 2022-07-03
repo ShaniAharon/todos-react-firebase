@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { todoService } from '../services/todo-service'
-import { useForm } from '../hooks/useForm.js'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, {useEffect} from 'react'
+// import { todoService } from '../services/todo-service'
+import {useForm} from '../hooks/useForm.js'
+import {useNavigate, useParams} from 'react-router-dom'
 
 export const TodoEdit = () => {
   const [todo, handleChange, setTodo] = useForm(null)
@@ -14,15 +14,15 @@ export const TodoEdit = () => {
   }, [])
 
   const loadTodo = async () => {
-    const todo = params.id
-      ? await todoService.getTodoById(params.id)
-      : todoService.getEmptyTodo()
-    setTodo(todo)
+    // const todo = params.id
+    //   ? await todoService.getTodoById(params.id)
+    //   : todoService.getEmptyTodo()
+    // setTodo(todo)
   }
 
   const onSaveTodo = async (ev) => {
     ev.preventDefault()
-    await todoService.saveTodo(todo)
+    // await todoService.saveTodo(todo)
     navigate('/')
   }
 
@@ -87,7 +87,8 @@ export const TodoEdit = () => {
             id="status"
             onChange={handleChange}
             value={todo.status}
-            className="form-input">
+            className="form-input"
+          >
             <option value="open">open</option>
             <option value="in progress">in progress</option>
             <option value="done">done</option>
