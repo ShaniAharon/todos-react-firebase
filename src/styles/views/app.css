@@ -1,0 +1,7 @@
+body {
+  background: var(--gray-50);
+}
+
+.app-container {
+  min-height: 100vh;
+}
