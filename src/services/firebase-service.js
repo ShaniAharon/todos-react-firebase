@@ -42,12 +42,15 @@ async function query(collectionName) {
 
 async function getEntityById(collectionName, entityId) {
     const docRef = doc(db, collectionName, entityId)
-    const docSnap = await getDoc(docRef)
-
-    if (docSnap.exists()) {
-        return { _id: entityId, ...docSnap.data() }
-    } else {
-        console.log('No such document!')
+    try {
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+            return { _id: entityId, ...docSnap.data() }
+        } else {
+            console.log('No such document!')
+        }
+    } catch (e) {
+        console.error("Error finding document: ", e);
     }
 }
 
@@ -55,12 +58,20 @@ async function saveEntity(collectionName, entity) {
     if (entity._id) {
         const entityRef = doc(db, collectionName, entity._id)
         delete entity._id
-        await updateDoc(entityRef, entity)
+        try {
+            await updateDoc(entityRef, entity)
+        } catch (e) {
+            console.error("Error updating document: ", e);
+        }
     } else {
-        await addDoc(collection(db, collectionName), {
-            ...entity,
-            createdAt: serverTimestamp(),
-        })
+        try {
+            await addDoc(collection(db, collectionName), {
+                ...entity,
+                createdAt: serverTimestamp(),
+            })
+        } catch (e) {
+            console.error("Error saving document: ", e);
+        }
     }
 }
 
