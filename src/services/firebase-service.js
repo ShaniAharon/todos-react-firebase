@@ -1,14 +1,11 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 export const firebaseService = {
-    // query,
+    query,
     // getEntityById,
     // saveEntity,
     // removeEntity,
@@ -26,4 +23,28 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+async function saveEntity(collectionName) {
+    try {
+        const docRef = await addDoc(collection(db, collectionName), {
+            first: "Ada",
+            last: "Lovelace",
+            born: 1815
+        });
+        console.log('docRef', docRef);
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+async function query(collectionName) {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        console.log('doc.data()', doc.data());
+    });
+}

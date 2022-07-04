@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-// import { todoService } from '../services/todo-service'
+import {todoService} from '../services/todo-service'
 import {TodoList} from '../components/TodoList'
 
 export const TodoApp = () => {
@@ -10,8 +10,8 @@ export const TodoApp = () => {
   }, [])
 
   const loadTodos = async () => {
-    // const todos = await todoService.query()
-    // setTodos(todos)
+    const todos = await todoService.query()
+    setTodos(todos)
   }
 
   const onDelete = async (todoId) => {
