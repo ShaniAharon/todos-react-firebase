@@ -1,4 +1,4 @@
-import { firebaseService } from './firebase'
+import { firebaseService } from './firebase-service.js'
 
 export const todoService = {
   query,
