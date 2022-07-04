@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-// import { todoService } from '../services/todo-service'
+import {todoService} from '../services/todo-service'
 import {useForm} from '../hooks/useForm.js'
 import {useNavigate, useParams} from 'react-router-dom'
 
@@ -14,15 +14,15 @@ export const TodoEdit = () => {
   }, [])
 
   const loadTodo = async () => {
-    // const todo = params.id
-    //   ? await todoService.getTodoById(params.id)
-    //   : todoService.getEmptyTodo()
-    // setTodo(todo)
+    const todo = params.id
+      ? await todoService.getTodoById(params.id)
+      : todoService.getEmptyTodo()
+    setTodo(todo)
   }
 
   const onSaveTodo = async (ev) => {
     ev.preventDefault()
-    // await todoService.saveTodo(todo)
+    await todoService.saveTodo(todo)
     navigate('/')
   }
 

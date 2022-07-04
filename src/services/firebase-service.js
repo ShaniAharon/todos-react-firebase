@@ -1,14 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDoc, doc, getDocs, getFirestore, serverTimestamp, updateDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 export const firebaseService = {
     query,
-    // getEntityById,
-    // saveEntity,
-    // removeEntity,
+    getEntityById,
+    saveEntity,
+    removeEntity,
 }
 
 const firebaseConfig = {
@@ -27,24 +27,47 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-async function saveEntity(collectionName) {
+
+async function query(collectionName) {
     try {
-        const docRef = await addDoc(collection(db, collectionName), {
-            first: "Ada",
-            last: "Lovelace",
-            born: 1815
-        });
-        console.log('docRef', docRef);
-        console.log("Document written with ID: ", docRef.id);
+        const todosSnapshot = await getDocs(collection(db, collectionName))
+        console.log('todosSnapshot', todosSnapshot)
+        return todosSnapshot.docs.map((doc) => {
+            return { _id: doc.id, ...doc.data(), createdAt: doc.data().createdAt?.toDate() || new Date() }
+        })
     } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error("Error geting documents: ", e);
     }
 }
 
-async function query(collectionName) {
-    const querySnapshot = await getDocs(collection(db, collectionName));
-    querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        console.log('doc.data()', doc.data());
-    });
+async function getEntityById(collectionName, entityId) {
+    const docRef = doc(db, collectionName, entityId)
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+        return { _id: entityId, ...docSnap.data() }
+    } else {
+        console.log('No such document!')
+    }
+}
+
+async function saveEntity(collectionName, entity) {
+    if (entity._id) {
+        const entityRef = doc(db, collectionName, entity._id)
+        delete entity._id
+        await updateDoc(entityRef, entity)
+    } else {
+        await addDoc(collection(db, collectionName), {
+            ...entity,
+            createdAt: serverTimestamp(),
+        })
+    }
+}
+
+async function removeEntity(collectionName, entityId) {
+    try {
+        await deleteDoc(doc(db, collectionName, entityId))
+    } catch (e) {
+        console.error("Error deleting document: ", e);
+    }
 }

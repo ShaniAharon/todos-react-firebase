@@ -15,8 +15,8 @@ export const TodoApp = () => {
   }
 
   const onDelete = async (todoId) => {
-    // await todoService.removeTodo(todoId)
-    // loadTodos()
+    await todoService.removeTodo(todoId)
+    loadTodos()
   }
 
   if (!todos) return <div>Loading...</div>

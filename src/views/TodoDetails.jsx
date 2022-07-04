@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-// import { todoService } from '../services/todo-service'
+import {todoService} from '../services/todo-service'
 
 export const TodoDetails = () => {
   const [todo, setTodo] = useState(null)
@@ -13,8 +13,8 @@ export const TodoDetails = () => {
   }, [])
 
   const loadTodo = async () => {
-    // const todo = await todoService.getTodoById(params.id)
-    // setTodo(todo)
+    const todo = await todoService.getTodoById(params.id)
+    setTodo(todo)
   }
 
   if (!todo) return <div>Loading...</div>
