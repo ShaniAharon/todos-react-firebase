@@ -1,10 +1,11 @@
 import { todoService } from "../../services/todo-service.js"
 
+
 export function loadTodos() {
     return async (dispatch, getState) => {
         try {
-            const { filterBy } = getState().todoModule
-            const todos = await todoService.query(filterBy)
+            // const { filterBy } = getState().todoModule
+            const todos = await todoService.query()
             dispatch({ type: 'SET_TODOS', todos })
         } catch (err) {
             console.log('err:', err)

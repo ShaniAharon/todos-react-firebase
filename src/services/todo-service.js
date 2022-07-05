@@ -2,9 +2,9 @@ import { firebaseService } from './firebase-service.js'
 
 export const todoService = {
   query,
-  getTodoById,
-  saveTodo,
-  removeTodo,
+  getById: getTodoById,
+  save: saveTodo,
+  remove: removeTodo,
   getEmptyTodo,
 }
 
