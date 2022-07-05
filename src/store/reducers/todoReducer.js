@@ -1,34 +1,34 @@
 
 const INITIAL_STATE = {
-    notes: [],
+    todos: [],
     filterBy: null
 }
 
-export function noteReducer(state = INITIAL_STATE, action) {
+export function todoReducer(state = INITIAL_STATE, action) {
 
     switch (action.type) {
-        case 'SET_NOTES':
+        case 'SET_TODOS':
             return {
                 ...state,
-                notes: action.notes
+                todos: action.todos
             }
 
-        case 'ADD_NOTE':
+        case 'ADD_TODO':
             return {
                 ...state,
-                notes: [...state.notes, action.note]
+                todos: [...state.todos, action.todo]
             }
 
-        case 'REMOVE_NOTE':
+        case 'REMOVE_TODO':
             return {
                 ...state,
-                notes: state.notes.filter(note => note._id !== action.noteId)
+                todos: state.todos.filter(todo => todo._id !== action.todoId)
             }
 
-        case 'UPDATE_NOTE':
+        case 'UPDATE_TODO':
             return {
                 ...state,
-                notes: state.notes.map(note => note._id === action.note._id ? action.note : note)
+                todos: state.todos.map(todo => todo._id === action.todo._id ? action.todo : todo)
             }
         case 'SET_FILTER_BY':
             return {
