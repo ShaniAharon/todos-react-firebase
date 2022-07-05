@@ -2,9 +2,12 @@ import React, {useEffect} from 'react'
 import {todoService} from '../services/todo-service'
 import {useForm} from '../hooks/useForm.js'
 import {useNavigate, useParams} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import {getTodoById, saveTodo} from '../store/actions/todoActions'
 
 export const TodoEdit = () => {
   const [todo, handleChange, setTodo] = useForm(null)
+  const dispatch = useDispatch()
 
   let navigate = useNavigate()
   let params = useParams()
@@ -15,14 +18,15 @@ export const TodoEdit = () => {
 
   const loadTodo = async () => {
     const todo = params.id
-      ? await todoService.getTodoById(params.id)
+      ? await dispatch(getTodoById(params.id))
       : todoService.getEmptyTodo()
+    console.log('todo', todo)
     setTodo(todo)
   }
 
   const onSaveTodo = async (ev) => {
     ev.preventDefault()
-    await todoService.saveTodo(todo)
+    await dispatch(saveTodo(todo))
     navigate('/')
   }
 
