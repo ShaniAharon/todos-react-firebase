@@ -1,22 +1,27 @@
-import React, {useEffect, useState} from 'react'
-import {todoService} from '../services/todo-service'
+import React, {useEffect} from 'react'
 import {TodoList} from '../components/TodoList'
+import {useDispatch, useSelector} from 'react-redux'
+import {loadTodos, removeTodo} from '../store/actions/todoActions'
 
 export const TodoApp = () => {
-  const [todos, setTodos] = useState(null)
+  // const [todos, setTodos] = useState(null)
+  const {todos} = useSelector((state) => state.todoModule)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    loadTodos()
+    dispatch(loadTodos())
+    // eslint-disable-next-line
   }, [])
 
-  const loadTodos = async () => {
-    const todos = await todoService.query()
-    setTodos(todos)
-  }
+  // const loadTodos = async () => {
+  //   const todos = await todoService.query()
+  //   setTodos(todos)
+  // }
 
   const onDelete = async (todoId) => {
-    await todoService.removeTodo(todoId)
-    loadTodos()
+    dispatch(removeTodo(todoId))
+    // await todoService.removeTodo(todoId)
+    // loadTodos()
   }
 
   if (!todos) return <div>Loading...</div>
