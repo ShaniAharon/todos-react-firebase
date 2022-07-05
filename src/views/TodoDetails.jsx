@@ -1,19 +1,24 @@
 import React, {useEffect} from 'react'
 import {useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-import {todoService} from '../services/todo-service'
+// import {todoService} from '../services/todo-service'
+import {useDispatch} from 'react-redux'
+import {getTodoById} from '../store/actions/todoActions'
 
 export const TodoDetails = () => {
   const [todo, setTodo] = useState(null)
+  const dispatch = useDispatch()
   let navigate = useNavigate()
   let params = useParams()
 
   useEffect(() => {
     loadTodo()
+    // eslint-disable-next-line
   }, [])
 
   const loadTodo = async () => {
-    const todo = await todoService.getTodoById(params.id)
+    const todo = await dispatch(getTodoById(params.id)) // await todoService.getTodoById(params.id)
+    console.log('todo', todo)
     setTodo(todo)
   }
 
