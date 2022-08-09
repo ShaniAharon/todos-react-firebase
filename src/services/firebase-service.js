@@ -30,7 +30,7 @@ async function query(collectionName) {
         const todosSnapshot = await getDocs(collection(db, collectionName))
         console.log('todosSnapshot', todosSnapshot)
         return todosSnapshot.docs.map((doc) => {
-            return { _id: doc.id, ...doc.data(), createdAt: doc.data().createdAt?.toDate() || new Date() }
+            return { _id: doc.id, ...doc.data() }
         })
     } catch (e) {
         console.error("Error geting documents: ", e);
@@ -53,10 +53,12 @@ async function getEntityById(collectionName, entityId) {
 
 async function saveEntity(collectionName, entity) {
     if (entity._id) {
+        const _id = entity._id
         const entityRef = doc(db, collectionName, entity._id)
         delete entity._id
         try {
             await updateDoc(entityRef, entity)
+            return { _id, ...entity }
         } catch (e) {
             console.error("Error updating document: ", e);
         }
@@ -64,7 +66,7 @@ async function saveEntity(collectionName, entity) {
         try {
             await addDoc(collection(db, collectionName), {
                 ...entity,
-                createdAt: serverTimestamp(),
+                createdAt: new Date(),
             })
         } catch (e) {
             console.error("Error saving document: ", e);

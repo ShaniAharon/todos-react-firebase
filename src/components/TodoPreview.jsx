@@ -9,7 +9,7 @@ export const TodoPreview = ({todo, onDelete}) => {
       <h3 className="todo__txt clr-teal uppercase">{todo.txt}</h3>
       <p>
         <span className="fw-bold">Created At: </span>
-        {todo.createdAt?.toLocaleTimeString()}
+        {/* {todo.createdAt?.toLocaleTimeString()} */}
       </p>
       <div className="btn-group actions">
         <button
