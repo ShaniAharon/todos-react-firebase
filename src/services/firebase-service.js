@@ -28,7 +28,6 @@ const db = getFirestore(app);
 async function query(collectionName) {
     try {
         const todosSnapshot = await getDocs(collection(db, collectionName))
-        console.log('todosSnapshot', todosSnapshot)
         return todosSnapshot.docs.map((doc) => {
             return { _id: doc.id, ...doc.data() }
         })
